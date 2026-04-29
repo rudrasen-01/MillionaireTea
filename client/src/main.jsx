@@ -6,7 +6,7 @@ import App from './App.jsx'
 // Intercept fetch to automatically prepend VITE_API_URL
 const originalFetch = window.fetch;
 window.fetch = async (resource, config) => {
-  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+  const apiUrl = import.meta.env.VITE_API_URL;
   let newResource = resource;
   if (typeof resource === 'string' && resource.startsWith('/api')) {
     newResource = `${apiUrl}${resource}`;
