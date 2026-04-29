@@ -21,8 +21,14 @@ const app = express();
 const server = http.createServer(app);
 const PORT = process.env.PORT || 5001;
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://millionaire-tea-5h7w.onrender.com',
+  process.env.CLIENT_URL
+].filter(Boolean);
+
 app.use(helmet());
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 
@@ -101,7 +107,7 @@ async function start() {
       console.error('AdminConfig init error', e);
     }
     // start socket.io
-    const io = new Server(server, { cors: { origin: 'http://localhost:5173', methods: ['GET','POST'], credentials: true } });
+    const io = new Server(server, { cors: { origin: allowedOrigins, methods: ['GET','POST'], credentials: true } });
     app.set('io', io);
     io.on('connection', (socket) => {
       console.log('Socket connected', socket.id);
